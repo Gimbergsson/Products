@@ -11,12 +11,12 @@ import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.squareup.picasso.Picasso;
+import com.tradera.prov.model.Product;
+import com.tradera.prov.model.ProductsList;
+import com.tradera.prov.tradera.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import com.tradera.prov.tradera.R;
-import com.tradera.prov.model.Product;
-import com.tradera.prov.model.ProductsList;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductViewHolder> {
 
@@ -24,12 +24,12 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     private Context context;
     private SharedPreferences sharedPreferences;
     private Gson gson;
-    private boolean showLike;
+    private boolean asFavoriteList;
 
-    public ProductAdapter(Context context, ProductsList productsList, boolean showLike) {
+    public ProductAdapter(Context context, ProductsList productsList, boolean asFavoriteList) {
         this.context = context;
         this.productList = productsList;
-        this.showLike = showLike;
+        this.asFavoriteList = asFavoriteList;
     }
 
     static class ProductViewHolder extends RecyclerView.ViewHolder {
@@ -78,6 +78,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             @Override
             public void onClick(View view) {
                 if (isFavorite(product)) {
+                    if (asFavoriteList) {
+                        removeProduct(product);
+                    }
                     removeFromFavoritesList(product);
                 } else {
                     addToFavoritesList(product);
@@ -119,11 +122,13 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         ProductsList favorites = getFavorites();
         favorites.getProductList().remove(product);
 
-        productList.getProductList().remove(product);
-        notifyDataSetChanged();
-
         String listString = gson.toJson(favorites);
         sharedPreferences.edit().putString("Favorites", listString).apply();
+    }
+
+    private void removeProduct(Product product) {
+        productList.getProductList().remove(product);
+        notifyDataSetChanged();
     }
 
     private boolean isFavorite(Product product) {

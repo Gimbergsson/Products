@@ -3,31 +3,16 @@ package com.tradera.prov.model;
 import com.afollestad.ason.AsonName;
 import com.afollestad.bridge.annotations.ContentType;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @ContentType("application/json")
 public class ProductsList {
 
-    public ProductsList() {}
-
-    public ProductsList (List<Product> productList) {
-        this.productList = productList;
-    }
-
     @AsonName(name = "products")
     private List<Product> productList;
 
     public List<Product> getProductList() {
-        if (productList != null) {
-            return productList;
-        } else {
-            return new ArrayList<>();
-        }
-    }
-
-    public void setProductList(List<Product> productList) {
-        this.productList = productList;
+        return productList;
     }
 
     @Override

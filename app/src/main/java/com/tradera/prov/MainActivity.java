@@ -21,7 +21,6 @@ import butterknife.Unbinder;
 public class MainActivity extends AppCompatActivity {
 
     private Unbinder unbinder;
-    private ProductAdapter productAdapter;
 
     @BindView(R.id.product_recycler_view)
     RecyclerView productRecyclerView;
@@ -34,13 +33,11 @@ public class MainActivity extends AppCompatActivity {
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         productRecyclerView.setLayoutManager(layoutManager);
-
-        Api.getInstance().getProductList();
     }
 
     @Subscribe
     public void onProductListResponse(GotProductListEvent event) {
-        productAdapter = new ProductAdapter(getApplicationContext(), event.productsList, true);
+        ProductAdapter productAdapter = new ProductAdapter(getApplicationContext(), event.productsList, false);
         productRecyclerView.setAdapter(productAdapter);
     }
 
@@ -49,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         BusProvider.getInstance().register(this);
         unbinder = ButterKnife.bind(this);
+
+        Api.getInstance().getProductList();
     }
 
     @Override

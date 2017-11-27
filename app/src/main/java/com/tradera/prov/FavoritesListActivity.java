@@ -8,22 +8,17 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.google.gson.Gson;
-import com.squareup.otto.Subscribe;
-
-import java.util.ArrayList;
+import com.tradera.prov.adapters.ProductAdapter;
+import com.tradera.prov.model.ProductsList;
+import com.tradera.prov.tradera.R;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import com.tradera.prov.adapters.ProductAdapter;
-import com.tradera.prov.events.GotProductListEvent;
-import com.tradera.prov.model.ProductsList;
-import com.tradera.prov.tradera.R;
 
 public class FavoritesListActivity extends AppCompatActivity {
 
     private Unbinder unbinder;
-    private ProductAdapter productAdapter;
 
     @BindView(R.id.product_recycler_view)
     RecyclerView productRecyclerView;
@@ -43,7 +38,7 @@ public class FavoritesListActivity extends AppCompatActivity {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this);
         productRecyclerView.setLayoutManager(layoutManager);
 
-        productAdapter = new ProductAdapter(getApplicationContext(), savedFavoritesList, false);
+        ProductAdapter productAdapter = new ProductAdapter(getApplicationContext(), savedFavoritesList, true);
         productRecyclerView.setAdapter(productAdapter);
     }
 
