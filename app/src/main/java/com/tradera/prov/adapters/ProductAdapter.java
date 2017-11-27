@@ -15,6 +15,9 @@ import com.tradera.prov.model.Product;
 import com.tradera.prov.model.ProductsList;
 import com.tradera.prov.tradera.R;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -107,7 +110,14 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     private ProductsList getFavorites() {
         sharedPreferences = context.getSharedPreferences("Products", Context.MODE_PRIVATE);
         String savedFavoritesJson = sharedPreferences.getString("Favorites", "");
-        return gson.fromJson(savedFavoritesJson, ProductsList.class);
+        ProductsList productsList = gson.fromJson(savedFavoritesJson, ProductsList.class);
+
+        if (productsList != null) {
+            return productsList;
+        }
+
+        List<Product> newProductList = new ArrayList<>();
+        return new ProductsList(newProductList);
     }
 
     private void addToFavoritesList(Product product) {

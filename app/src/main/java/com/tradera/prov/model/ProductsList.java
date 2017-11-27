@@ -8,11 +8,23 @@ import java.util.List;
 @ContentType("application/json")
 public class ProductsList {
 
+    ProductsList() {
+
+    }
+
+    public ProductsList(List<Product> productList) {
+        this.productList = productList;
+    }
+
     @AsonName(name = "products")
     private List<Product> productList;
 
     public List<Product> getProductList() {
         return productList;
+    }
+
+    public void setProductList(List<Product> productList) {
+        this.productList = productList;
     }
 
     @Override
