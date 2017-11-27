@@ -74,23 +74,19 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                 .fit()
                 .into(holder.productImage);
 
-        if (showLike) {
-            holder.favoriteIcon.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    if (isFavorite(product)) {
-                        removeFromFavoritesList(product);
-                    } else {
-                        addToFavoritesList(product);
-                    }
-                    setFavoriteIconState(holder, product);
+        holder.favoriteIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (isFavorite(product)) {
+                    removeFromFavoritesList(product);
+                } else {
+                    addToFavoritesList(product);
                 }
-            });
+                setFavoriteIconState(holder, product);
+            }
+        });
 
-            setFavoriteIconState(holder, product);
-        } else {
-            holder.favoriteIcon.setVisibility(View.GONE);
-        }
+        setFavoriteIconState(holder, product);
     }
 
     @Override
@@ -122,6 +118,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     private void removeFromFavoritesList(Product product) {
         ProductsList favorites = getFavorites();
         favorites.getProductList().remove(product);
+
+        productList.getProductList().remove(product);
+        notifyDataSetChanged();
 
         String listString = gson.toJson(favorites);
         sharedPreferences.edit().putString("Favorites", listString).apply();
