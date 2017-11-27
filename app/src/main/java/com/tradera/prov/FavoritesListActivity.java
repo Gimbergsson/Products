@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.MenuItem;
 
 import com.google.gson.Gson;
 import com.tradera.prov.adapters.ProductAdapter;
@@ -28,6 +29,9 @@ public class FavoritesListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_favorites_list);
         unbinder = ButterKnife.bind(this);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         Gson gson = new Gson();
 
         SharedPreferences sharedPreferences = getSharedPreferences("Products", Context.MODE_PRIVATE);
@@ -52,5 +56,15 @@ public class FavoritesListActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         unbinder.unbind();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
